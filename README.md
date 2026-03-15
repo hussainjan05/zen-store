@@ -80,4 +80,4 @@ To promote a user to admin:
 Use Stripe test card numbers (e.g., `4242 4242 4242 4242`) for testing.
 
 ---
-*Created by Antigravity AI for ZenStore.*
+*Created  for ZenStore.*
