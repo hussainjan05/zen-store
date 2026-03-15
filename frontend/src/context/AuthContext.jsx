@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, otp) => {
         dispatch({ type: 'LOGIN_REQUEST' });
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/verify-otp`, { email, otp });
+            const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'https://resourceful-grace-production-aa88.up.railway.app/api'}/auth/verify-otp`, { email, otp });
             dispatch({ type: 'LOGIN_SUCCESS', payload: data });
             return data;
         } catch (error) {

@@ -9,7 +9,7 @@ export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const socketInstance = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
+        const socketInstance = io(import.meta.env.VITE_API_URL || 'https://resourceful-grace-production-aa88.up.railway.app', {
             withCredentials: true,
             transports: ['websocket', 'polling']
         });
