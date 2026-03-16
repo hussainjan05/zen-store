@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+const getBaseURL = () => {
+    let url = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+    // Ensure no trailing slash
+    return url.replace(/\/$/, '');
+};
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'https://resourceful-grace-production-aa88.up.railway.app/api',
+    baseURL: getBaseURL(),
 });
 
 // Add a request interceptor to include the JWT token
