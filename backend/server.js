@@ -40,13 +40,17 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+        console.log('Incoming Request Origin:', origin);
+        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes(origin + '/') || process.env.NODE_ENV === 'development') {
             callback(null, true);
         } else {
+            console.error('CORS Blocked for Origin:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 if (process.env.NODE_ENV === 'development') {
