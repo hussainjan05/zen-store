@@ -13,6 +13,7 @@ const { emitEvent } = require('../utils/socket');
  */
 const sendOTP = async (req, res) => {
     const { email, otp } = req.body;
+    console.log('OTP Request received for email:', email);
 
     if (!email) {
         return res.status(400).json({ message: 'Email is required' });
