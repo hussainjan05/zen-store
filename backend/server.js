@@ -35,19 +35,12 @@ const allowedOrigins = [
     'http://localhost:5175',
     'http://localhost:5176',
     'https://zen-store-kappa.vercel.app',
+    'https://zen-store-kappa.vercel.app/',
     process.env.CORS_ORIGIN
 ].filter(Boolean);
 
 app.use(cors({
-    origin: function (origin, callback) {
-        console.log('Incoming Request Origin:', origin);
-        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes(origin + '/') || process.env.NODE_ENV === 'development') {
-            callback(null, true);
-        } else {
-            console.error('CORS Blocked for Origin:', origin);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -74,6 +67,10 @@ const path = require('path');
 // No longer serving local uploads, using Cloudinary
 
 // Health Check
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', message: 'API is running...' });
+});
+
 app.get('/', (req, res) => {
     res.send('API is running...');
 });
