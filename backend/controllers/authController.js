@@ -41,12 +41,16 @@ const sendOTP = async (req, res) => {
             console.log(`OTP ${otpCode} sent to ${email}`);
         } catch (emailError) {
             console.error('Email send failed:', emailError);
-            return res.status(500).json({ message: 'Failed to send verification email. Please check your configuration.' });
+            return res.status(500).json({
+                success: false,
+                message: 'Email service error',
+                error: emailError.message
+            });
         }
 
         res.status(200).json({ success: true, message: 'OTP stored and sent successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
