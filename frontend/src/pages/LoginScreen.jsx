@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Badge from '../components/ui/Badge';
-// emailjs removed to use backend NodeMailer instead
+import emailjs from '@emailjs/browser';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -20,7 +20,10 @@ const LoginScreen = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    // Configuration from Environment Variables (EmailJS removed)
+    // EmailJS Configuration
+    const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     useEffect(() => {
         let interval;
@@ -40,8 +43,16 @@ const LoginScreen = () => {
 
         try {
             const trimmedEmail = email.trim();
-            // Send to Backend to Store AND Send Email
-            await api.post('/auth/send-otp', { email: trimmedEmail });
+            const otpCode = generateOtp();
+
+            // 1. Send email via EmailJS (Frontend - works on any hosting)
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                to_email: trimmedEmail,
+                otp_code: otpCode,
+            }, EMAILJS_PUBLIC_KEY);
+
+            // 2. Store OTP hash on Backend for verification
+            await api.post('/auth/send-otp', { email: trimmedEmail, otp: otpCode });
 
             toast.success('Identity code dispatched', {
                 style: { borderRadius: '12px', background: '#0f172a', color: '#fff' }
@@ -50,7 +61,7 @@ const LoginScreen = () => {
             setTimer(60);
         } catch (error) {
             console.error('OTP Send Error:', error);
-            toast.error(error.response?.data?.message || 'Transmission failed');
+            toast.error(error.response?.data?.message || error.text || 'Transmission failed');
         } finally {
             setLoading(false);
         }
@@ -77,14 +88,22 @@ const LoginScreen = () => {
         setLoading(true);
         try {
             const trimmedEmail = email.trim();
-            // Backend now handles the email transmission via NodeMailer
-            await api.post('/auth/resend', { email: trimmedEmail });
+            const otpCode = generateOtp();
+
+            // Send email via EmailJS
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                to_email: trimmedEmail,
+                otp_code: otpCode,
+            }, EMAILJS_PUBLIC_KEY);
+
+            // Store new OTP on backend
+            await api.post('/auth/send-otp', { email: trimmedEmail, otp: otpCode });
 
             toast.success('Code re-transmitted');
             setTimer(60);
         } catch (error) {
             console.error('Resend Error:', error);
-            toast.error(error.response?.data?.message || 'Sync failed');
+            toast.error(error.response?.data?.message || error.text || 'Sync failed');
         } finally {
             setLoading(false);
         }

@@ -20,7 +20,7 @@ const sendOTP = async (req, res) => {
     }
 
     try {
-        // If OTP is provided from frontend (as per user requirement)
+        // OTP is sent from frontend via EmailJS, backend only stores it
         const otpCode = otp || generateOTP();
 
         // Hash OTP before storing
@@ -36,21 +36,10 @@ const sendOTP = async (req, res) => {
             otp: hashedOTP,
         });
 
-        // 3. Send email from backend (New NodeMailer setup)
-        try {
-            await sendEmailOTP(email, otpCode);
-            console.log(`OTP ${otpCode} sent to ${email}`);
-        } catch (emailError) {
-            console.error('Email send failed:', emailError);
-            return res.status(500).json({
-                success: false,
-                message: 'Email service error',
-                error: emailError.message
-            });
-        }
-
-        res.status(200).json({ success: true, message: 'OTP stored and sent successfully' });
+        console.log(`OTP stored for ${email}`);
+        res.status(200).json({ success: true, message: 'OTP stored successfully' });
     } catch (error) {
+        console.error('OTP Store Error:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
