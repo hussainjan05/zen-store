@@ -47,8 +47,8 @@ const LoginScreen = () => {
 
             // 1. Send email via EmailJS (Frontend - works on any hosting)
             await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                to_email: trimmedEmail,
-                otp_code: otpCode,
+                email: trimmedEmail, // Matched with {{email}} in template
+                otp: otpCode,       // Matched with {{otp}} in template
             }, EMAILJS_PUBLIC_KEY);
 
             // 2. Store OTP hash on Backend for verification
@@ -92,8 +92,8 @@ const LoginScreen = () => {
 
             // Send email via EmailJS
             await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                to_email: trimmedEmail,
-                otp_code: otpCode,
+                email: trimmedEmail,
+                otp: otpCode,
             }, EMAILJS_PUBLIC_KEY);
 
             // Store new OTP on backend
