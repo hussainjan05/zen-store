@@ -2,8 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSettings } from '../context/SettingsContext';
 
 const Footer = () => {
+    const { settings } = useSettings();
     return (
         <footer className="relative bg-slate-900 pt-24 pb-12 overflow-hidden">
             {/* Background Decorative Elements */}
@@ -16,8 +18,12 @@ const Footer = () => {
                     {/* Brand Section */}
                     <div className="lg:col-span-4 space-y-8">
                         <Link to="/" className="text-3xl font-bold text-white flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-brand-secondary shadow-lg shadow-brand-primary/20" />
-                            <span>ZenStore</span>
+                            {settings.siteLogo ? (
+                                <img src={settings.siteLogo} className="h-10 w-auto object-contain" alt={settings.siteName} />
+                            ) : (
+                                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-brand-secondary shadow-lg shadow-brand-primary/20" />
+                            )}
+                            <span>{settings.siteName || 'ZenStore'}</span>
                         </Link>
                         <p className="text-slate-400 text-lg leading-relaxed max-w-sm">
                             Redefining the digital shopping experience with premium curated collections and unmatched service.
@@ -84,7 +90,7 @@ const Footer = () => {
 
                 <div className="pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-slate-500 text-sm">
-                        &copy; {new Date().getFullYear()} ZenStore. All rights reserved. Built with passion.
+                        &copy; {new Date().getFullYear()} {settings.siteName || 'ZenStore'}. All rights reserved. Built with passion.
                     </p>
                     <div className="flex gap-8 text-sm font-medium text-slate-500">
                         <Link to="#" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>

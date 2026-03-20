@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, ShieldCheck, ArrowRight, Loader, Sparkles, Fingerprint, Lock, AtSign, ChevronRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useSettings } from '../context/SettingsContext';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,12 +19,13 @@ const LoginScreen = () => {
     const [timer, setTimer] = useState(0);
 
     const { login } = useAuth();
+    const { settings } = useSettings();
     const navigate = useNavigate();
 
-    // EmailJS Configuration
-    const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    // EmailJS Configuration - Priority given to dynamic settings
+    const EMAILJS_SERVICE_ID = settings.emailJsServiceId || import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const EMAILJS_TEMPLATE_ID = settings.emailJsTemplateId || import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const EMAILJS_PUBLIC_KEY = settings.emailJsPublicKey || import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     useEffect(() => {
         let interval;

@@ -5,11 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, User, Search, Menu, X, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useSettings } from '../context/SettingsContext';
 import Button from './ui/Button';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
     const { cartItems } = useCart();
+    const { settings } = useSettings();
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [isScrolled, setIsScrolled] = useState(false);
@@ -55,13 +57,19 @@ const Navbar = () => {
             >
                 {/* Logo & Links */}
                 <div className="flex items-center gap-12">
-                    <Link to="/" className="text-2xl font-bold text-gradient flex items-center gap-2">
-                        <motion.div
-                            whileHover={{ rotate: 180 }}
-                            transition={{ duration: 0.5 }}
-                            className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600"
-                        />
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">ZenStore</span>
+                    <Link to="/" className="text-2xl font-bold flex items-center gap-2">
+                        {settings.siteLogo ? (
+                            <img src={settings.siteLogo} className="h-8 w-auto object-contain" alt={settings.siteName} />
+                        ) : (
+                            <motion.div
+                                whileHover={{ rotate: 180 }}
+                                transition={{ duration: 0.5 }}
+                                className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600"
+                            />
+                        )}
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                            {settings.siteName || 'ZenStore'}
+                        </span>
                     </Link>
 
                     {/* Desktop Links */}
