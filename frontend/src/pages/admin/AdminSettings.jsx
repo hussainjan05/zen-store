@@ -242,16 +242,27 @@ const AdminSettings = () => {
                                         <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Service Protocol ID</label>
                                         <input
                                             className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-brand-primary/30 outline-none text-sm font-mono tracking-tighter"
-                                            value={settings.emailJsServiceId}
+                                            value={settings.emailJsServiceId || ''}
                                             onChange={(e) => setSettings({ ...settings, emailJsServiceId: e.target.value })}
+                                            placeholder="service_..."
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Template Identifier</label>
+                                        <input
+                                            className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-brand-primary/30 outline-none text-sm font-mono tracking-tighter"
+                                            value={settings.emailJsTemplateId || ''}
+                                            onChange={(e) => setSettings({ ...settings, emailJsTemplateId: e.target.value })}
+                                            placeholder="template_..."
                                         />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Cryptographic Public Key</label>
                                         <input
                                             className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-brand-primary/30 outline-none text-sm font-mono tracking-tighter"
-                                            value={settings.emailJsPublicKey}
+                                            value={settings.emailJsPublicKey || ''}
                                             onChange={(e) => setSettings({ ...settings, emailJsPublicKey: e.target.value })}
+                                            placeholder="user_..."
                                         />
                                     </div>
                                 </div>
