@@ -48,67 +48,69 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   return (
     <AuthProvider>
-      <CartProvider>
-        <Router>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              <Suspense fallback={<LoadingFallback />}>
-                <Routes>
-                  <Route path="/" element={<HomeScreen />} />
-                  <Route path="/products" element={<ProductsScreen />} />
-                  <Route path="/category/:name" element={<CategoryScreen />} />
-                  <Route path="/login" element={<LoginScreen />} />
-                  <Route path="/search" element={<SearchScreen />} />
-                  <Route path="/product/:id" element={<ProductScreen />} />
-                  <Route path="/cart" element={<CartScreen />} />
-                  <Route path="/checkout" element={
-                    <ProtectedRoute>
-                      <CheckoutScreen />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/order/:id" element={
-                    <ProtectedRoute>
-                      <OrderScreen />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/orders" element={
-                    <ProtectedRoute>
-                      <OrdersListScreen />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/profile" element={
-                    <ProtectedRoute>
-                      <ProfileScreen />
-                    </ProtectedRoute>
-                  } />
+      <SettingsProvider>
+        <CartProvider>
+          <Router>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow">
+                <Suspense fallback={<LoadingFallback />}>
+                  <Routes>
+                    <Route path="/" element={<HomeScreen />} />
+                    <Route path="/products" element={<ProductsScreen />} />
+                    <Route path="/category/:name" element={<CategoryScreen />} />
+                    <Route path="/login" element={<LoginScreen />} />
+                    <Route path="/search" element={<SearchScreen />} />
+                    <Route path="/product/:id" element={<ProductScreen />} />
+                    <Route path="/cart" element={<CartScreen />} />
+                    <Route path="/checkout" element={
+                      <ProtectedRoute>
+                        <CheckoutScreen />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/order/:id" element={
+                      <ProtectedRoute>
+                        <OrderScreen />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/orders" element={
+                      <ProtectedRoute>
+                        <OrdersListScreen />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/profile" element={
+                      <ProtectedRoute>
+                        <ProfileScreen />
+                      </ProtectedRoute>
+                    } />
 
-                  {/* Admin Routes */}
-                  <Route path="/admin" element={
-                    <AdminRoute>
-                      <AdminLayout />
-                    </AdminRoute>
-                  }>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="products" element={<AdminProductList />} />
-                    <Route path="products/new" element={<AdminProductEdit />} />
-                    <Route path="products/:id/edit" element={<AdminProductEdit />} />
-                    <Route path="orders" element={<AdminOrderList />} />
-                    <Route path="orders/:id" element={<OrderScreen />} />
-                    <Route path="categories" element={<AdminCategoryList />} />
-                    <Route path="users" element={<AdminUserList />} />
-                    <Route path="reviews" element={<AdminReviewList />} />
-                    <Route path="coupons" element={<AdminCouponList />} />
-                    <Route path="settings" element={<AdminSettings />} />
-                  </Route>
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
-          </div>
-          <Toaster position="bottom-right" />
-        </Router>
-      </CartProvider>
+                    {/* Admin Routes */}
+                    <Route path="/admin" element={
+                      <AdminRoute>
+                        <AdminLayout />
+                      </AdminRoute>
+                    }>
+                      <Route index element={<AdminDashboard />} />
+                      <Route path="products" element={<AdminProductList />} />
+                      <Route path="products/new" element={<AdminProductEdit />} />
+                      <Route path="products/:id/edit" element={<AdminProductEdit />} />
+                      <Route path="orders" element={<AdminOrderList />} />
+                      <Route path="orders/:id" element={<OrderScreen />} />
+                      <Route path="categories" element={<AdminCategoryList />} />
+                      <Route path="users" element={<AdminUserList />} />
+                      <Route path="reviews" element={<AdminReviewList />} />
+                      <Route path="coupons" element={<AdminCouponList />} />
+                      <Route path="settings" element={<AdminSettings />} />
+                    </Route>
+                  </Routes>
+                </Suspense>
+              </main>
+              <Footer />
+            </div>
+            <Toaster position="bottom-right" />
+          </Router>
+        </CartProvider>
+      </SettingsProvider>
     </AuthProvider>
   );
 };
