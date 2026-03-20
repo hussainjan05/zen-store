@@ -15,7 +15,8 @@ import {
     Lock,
     Phone,
     Monitor,
-    Upload
+    Upload,
+    AtSign
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
