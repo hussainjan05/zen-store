@@ -23,8 +23,10 @@ import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import Badge from '../../components/ui/Badge';
+import { useSettings } from '../../context/SettingsContext';
 
 const AdminSettings = () => {
+    const { refreshSettings } = useSettings();
     const [settings, setSettings] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -81,6 +83,7 @@ const AdminSettings = () => {
         setSaving(true);
         try {
             await api.put('/settings', settings);
+            await refreshSettings();
             toast.success('Core architecture updated successfully', {
                 style: { borderRadius: '12px', background: '#0f172a', color: '#fff' }
             });
