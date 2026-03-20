@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import { Bell, Search, User, Settings as SettingsIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const AdminLayout = () => {
     const { user } = useAuth();
@@ -39,19 +40,22 @@ const AdminLayout = () => {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
+                                onClick={() => toast.success('You are all caught up! No new alerts.', { icon: '🔔' })}
                                 className="relative p-2.5 text-slate-500 hover:bg-slate-100 rounded-xl transition-colors"
                             >
                                 <Bell size={20} />
                                 <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-brand-accent rounded-full border-2 border-white"></span>
                             </motion.button>
 
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="p-2.5 text-slate-500 hover:bg-slate-100 rounded-xl transition-colors hidden sm:flex"
-                            >
-                                <SettingsIcon size={20} />
-                            </motion.button>
+                            <Link to="/admin/settings">
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="p-2.5 text-slate-500 hover:bg-slate-100 rounded-xl transition-colors hidden sm:flex"
+                                >
+                                    <SettingsIcon size={20} />
+                                </motion.button>
+                            </Link>
                         </div>
 
                         <div className="h-8 w-px bg-slate-200 mx-1 sm:mx-0"></div>
