@@ -16,10 +16,12 @@ import {
     X
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useSettings } from '../../context/SettingsContext';
 
 const AdminSidebar = ({ isOpen, setIsOpen }) => {
     const location = useLocation();
     const { logout } = useAuth();
+    const { settings } = useSettings();
 
     const menuItems = [
         { title: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
@@ -36,12 +38,23 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
         <div className="h-full bg-slate-950 text-white flex flex-col overflow-hidden">
             <div className="p-8 flex items-center justify-between">
                 <Link to="/" className="flex items-center gap-3 group">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-brand-secondary flex items-center justify-center shadow-lg shadow-brand-primary/20 transition-transform group-hover:rotate-12">
-                        <LayoutDashboard size={24} />
-                    </div>
+                    {settings.siteLogo ? (
+                        <div className="w-10 h-10 rounded-xl bg-white border border-white/10 flex items-center justify-center overflow-hidden shadow-lg transition-transform group-hover:rotate-12">
+                            <img src={settings.siteLogo} className="w-full h-full object-contain" alt="Logo" />
+                        </div>
+                    ) : (
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-brand-secondary flex items-center justify-center shadow-lg shadow-brand-primary/20 transition-transform group-hover:rotate-12">
+                            <LayoutDashboard size={24} />
+                        </div>
+                    )}
                     <div>
-                        <h1 className="text-xl font-bold tracking-tight">ZEN<span className="text-brand-primary">ADMIN</span></h1>
-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mt-1">v2.1 Premium</p>
+                        <h1 className="text-xl font-bold tracking-tight uppercase">
+                            {settings.siteName ? settings.siteName.slice(0, 3) : 'ZEN'}
+                            <span className="text-brand-primary">
+                                {settings.siteName ? settings.siteName.slice(3) : 'ADMIN'}
+                            </span>
+                        </h1>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mt-1">Infrastructure v4.1</p>
                     </div>
                 </Link>
                 {/* Mobile close button */}
