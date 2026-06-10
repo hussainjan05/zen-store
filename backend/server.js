@@ -71,9 +71,19 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'API is running...' });
 });
 
-app.get('/', (req, res) => {
-    res.send('API is running...');
-});
+// Serve frontend static files in production
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend/dist')));
+    
+    // Handle React routing - send all non-API routes to index.html
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../frontend/dist', 'index.html'));
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.send('API is running...');
+    });
+}
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
